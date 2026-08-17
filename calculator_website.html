@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Calculator</title><style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#eef2f7;font-family:Arial}.c{width:320px;background:#172033;padding:18px;border-radius:22px;box-shadow:0 18px 45px #0003}.d{height:75px;background:#0c1320;color:#fff;border-radius:14px;margin-bottom:14px;padding:10px 15px;display:flex;align-items:end;justify-content:end;font-size:36px;overflow:hidden}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}button{height:60px;border:0;border-radius:13px;font-size:20px;font-weight:bold;background:#29364d;color:#fff;cursor:pointer}button:hover{filter:brightness(1.15)}.op{background:#2563eb}.cl{background:#64748b}.eq{background:#16a34a}.z{grid-column:span 2}</style></head>
+<body><div class="c"><div class="d" id="d">0</div><div class="g">
+<button class="cl" onclick="clr()">AC</button><button onclick="back()">⌫</button><button onclick="pct()">%</button><button class="op" onclick="op('/')">÷</button>
+<button onclick="num('7')">7</button><button onclick="num('8')">8</button><button onclick="num('9')">9</button><button class="op" onclick="op('*')">×</button>
+<button onclick="num('4')">4</button><button onclick="num('5')">5</button><button onclick="num('6')">6</button><button class="op" onclick="op('-')">−</button>
+<button onclick="num('1')">1</button><button onclick="num('2')">2</button><button onclick="num('3')">3</button><button class="op" onclick="op('+')">+</button>
+<button class="z" onclick="num('0')">0</button><button onclick="dec()">.</button><button class="eq" onclick="calc()">=</button>
+</div></div><script>
+let cur='0',prev=null,operator=null,wait=false,d=document.getElementById('d');function show(){d.textContent=cur}
+function num(n){if(wait){cur=n;wait=false}else cur=cur==='0'?n:cur+n;show()}function dec(){if(wait){cur='0.';wait=false}else if(!cur.includes('.'))cur+='.';show()}
+function op(o){if(operator&&!wait)calc();prev=parseFloat(cur);operator=o;wait=true}
+function calc(){if(operator===null||prev===null)return;let a=prev,b=parseFloat(cur),r=operator==='+'?a+b:operator==='-'?a-b:operator==='*'?a*b:b===0?'Error':a/b;cur=typeof r==='string'?r:String(Number(r.toFixed(10)));prev=null;operator=null;wait=true;show()}
+function clr(){cur='0';prev=null;operator=null;wait=false;show()}function back(){if(!wait){cur=cur.length>1?cur.slice(0,-1):'0';show()}}function pct(){if(cur!=='Error')cur=String(parseFloat(cur)/100);show()}
+document.addEventListener('keydown',e=>{if(/[0-9]/.test(e.key))num(e.key);else if(e.key=='.')dec();else if('+-*/'.includes(e.key))op(e.key);else if(e.key==='Enter'||e.key==='=')calc();else if(e.key==='Escape')clr();else if(e.key==='Backspace')back();else if(e.key==='%')pct()});
+</script></body></html>
